@@ -1,7 +1,7 @@
-### NAME:
-### ROLL NO :
-### DEPARTMENT 
-### DATE
+### NAME:Pragaharshitha NC
+### ROLL NO :212222110033
+### DEPARTMENT : cse(iot)
+### DATE : 16.05.2025
 
 
 
@@ -138,16 +138,55 @@ Run the Python script.
 
 Check if the message appears in the HiveMQ Web Client.
 ## PROGRAM
-[
+
+```
+import paho.mqtt.client as mqtt
+import time
+
+# HiveMQ Cloud credentials
+BROKER = "359f43e9448d4f6ebc5011e7c24dc49b.s1.eu.hivemq.cloud"  # Updated HiveMQ Cloud instance URL
+PORT = 8884  # Secure WebSocket port
+TOPIC = "sensor/temperature"
+USERNAME = "Pragaharshitha "  # Replace with your HiveMQ Cloud username
+PASSWORD = "praga_2005"  # Replace with your HiveMQ Cloud password
+
+# Fixed temperature value
+TEMPERATURE_VALUE = 25.5
+
+# Callback when the client connects to the broker
+def on_connect(client, userdata, flags, rc, properties=None):
+    if rc == 0:
+        print("Connected to HiveMQ Cloud successfully")
+    else:
+        print(f"Connection failed with code {rc}")
+
+# Create MQTT client and set WebSocket transport
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, transport="websockets")
+client.username_pw_set(USERNAME, PASSWORD)
+client.tls_set()  # Enable TLS for secure WebSockets
+client.on_connect = on_connect
+
+# Connect to HiveMQ Cloud using WebSocket
+client.connect(BROKER, PORT, 60)
+client.loop_start()
+
+# Publish temperature value repeatedly every 5 seconds
+try:
+    while True:
+        client.publish(TOPIC, TEMPERATURE_VALUE)
+        print(f"Published temperature: {TEMPERATURE_VALUE} to topic: {TOPIC}")
+        time.sleep(5)  # Adjust interval as needed
+except KeyboardInterrupt:
+    print("Stopping MQTT client...")
+    client.loop_stop()
+    client.disconnect()
 
 
-
-
-
-]
+```
 
 ### OUTPUT SCREENSHOTS
 
+![Screenshot 2025-05-21 174136](https://github.com/user-attachments/assets/4686d152-f21b-48e9-b743-dc6c7a185886)
 
 
 ## Results
